@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - gym-net
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/gym_tracker
+    networks:
+      - gym-net
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - gym-net
+
+volumes:
+  mongo-data:
+
+networks:
+  gym-net:
+    driver: bridge
