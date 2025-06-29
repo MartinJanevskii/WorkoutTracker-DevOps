@@ -1,4 +1,4 @@
-name: Docker
+name: Docker-build-and-push
 
 on:
   push:
@@ -8,7 +8,7 @@ env:
   IMAGE_NAME: workout-tracker
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
 
@@ -28,16 +28,14 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: .Dockerfile
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-backend:latest
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: .Dockerfile
+          file: ./frontend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-frontend:latest
 
