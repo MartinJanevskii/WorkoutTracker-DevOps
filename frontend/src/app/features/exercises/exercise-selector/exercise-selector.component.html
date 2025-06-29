@@ -1,0 +1,7 @@
+<label class="exercise-selector">
+  Exercise:
+  <select [formControl]="formControl">
+    <option value="">Select...</option>
+    <option *ngFor="let e of exercises" [value]="e.id">{{ e.name }}</option>
+  </select>
+</label>

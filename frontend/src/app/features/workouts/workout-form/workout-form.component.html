@@ -1,0 +1,58 @@
+<div class="workout-form">
+  <h2>New Workout</h2>
+
+  <form [formGroup]="workoutForm" (ngSubmit)="submit()">
+    <label>
+      Name:
+      <input formControlName="name" />
+    </label>
+
+    <div formArrayName="sets">
+      <div
+        class="set-group"
+        *ngFor="let set of sets.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <h4>Set #{{ i + 1 }}</h4>
+
+        <div class="set-fields">
+          <label>
+            Reps:
+            <input formControlName="reps" type="number" />
+          </label>
+
+          <label>
+            Weight:
+            <input formControlName="weight" type="number" />
+          </label>
+
+          <label>
+            RPE:
+            <input formControlName="rpe" type="number" />
+          </label>
+
+          <label>
+            Rest (sec):
+            <input formControlName="restDuration" type="number" />
+          </label>
+
+          <app-exercise-selector [formControl]="getExerciseControl(set)">
+          </app-exercise-selector>
+        </div>
+
+        <button
+          type="button"
+          class="remove-set"
+          (click)="removeSet(i)"
+        >
+          Remove Set
+        </button>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button type="button" class="add-set" (click)="addSet()">Add Set</button>
+      <button type="submit" class="submit">Save Workout</button>
+    </div>
+  </form>
+</div>

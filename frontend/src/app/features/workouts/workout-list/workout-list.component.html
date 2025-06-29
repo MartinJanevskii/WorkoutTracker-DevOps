@@ -1,0 +1,10 @@
+<div class="workout-list">
+  <a routerLink="/new-workout">+ Start New Workout</a>
+  <h2>Workout History</h2>
+  <ul>
+    <li *ngFor="let workout of workouts">
+      <span>{{ workout.name }} - {{ workout.date | date:'short' }}</span>
+      <button [routerLink]="['/workout', workout.id]">Details</button>
+    </li>
+  </ul>
+</div>

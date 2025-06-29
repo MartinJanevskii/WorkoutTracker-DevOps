@@ -1,0 +1,34 @@
+<div class="workout-detail" *ngIf="!loading; else loadingTpl">
+  <h2>{{ workout.name }}</h2>
+  <p><strong>Date:</strong> {{ workout.date | date:'short' }}</p>
+
+  <h3>Sets</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Exercise</th>
+        <th>Reps</th>
+        <th>Weight</th>
+        <th>RPE</th>
+        <th>Rest (sec)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let set of workout.sets">
+        <td>{{ set.setNumber }}</td>
+        <td>{{ getExerciseName(set.exerciseId) }}</td>
+        <td>{{ set.reps }}</td>
+        <td>{{ set.weight }}</td>
+        <td>{{ set.rpe }}</td>
+        <td>{{ set.restDuration }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <a routerLink="/">← Back to workouts</a>
+</div>
+
+<ng-template #loadingTpl>
+  <div>Loading...</div>
+</ng-template>

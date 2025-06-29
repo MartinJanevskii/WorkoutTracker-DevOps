@@ -1,0 +1,30 @@
+.workout-list {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 1rem;
+  }
+}

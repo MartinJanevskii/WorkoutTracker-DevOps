@@ -1,0 +1,110 @@
+.workout-form {
+  max-width: 850px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+
+  h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      color: #333;
+
+      input {
+        margin-top: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    .set-group {
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+
+      h4 {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: #444;
+      }
+
+      .set-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+
+        label,
+        app-exercise-selector {
+          flex: 1 1 150px;
+          min-width: 150px;
+        }
+      }
+
+      .remove-set {
+        margin-top: 1rem;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #b02a37;
+        }
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+
+      button {
+        padding: 0.7rem 1.4rem;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 1rem;
+
+        &.add-set {
+          background-color: #007bff;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+
+        &.submit {
+          background-color: #28a745;
+
+          &:hover {
+            background-color: #1e7e34;
+          }
+        }
+      }
+    }
+  }
+}
