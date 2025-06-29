@@ -34,7 +34,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
-          file: Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-backend:latest
 
@@ -42,7 +41,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
-          file: Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-frontend:latest
 
