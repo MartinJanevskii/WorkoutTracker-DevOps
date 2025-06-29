@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gym-app
+  namespace: gym-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gym-app
+  template:
+    metadata:
+      labels:
+        app: gym-app
+    spec:
+      containers:
+        - name: backend
+          image: martinjanevskii/workout-tracker-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: MONGO_INITDB_ROOT_PASSWORD
+            - name: SPRING_DATA_MONGODB_HOST
+              value: mongo-db
+            - name: SPRING_DATA_MONGODB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: SPRING_DATA_MONGODB_PORT
+            - name: SPRING_DATA_MONGODB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: SPRING_DATA_MONGODB_DATABASE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: gym-tracker
+spec:
+  selector:
+    app: gym-app
+  ports:
+    - port: 8080
+      targetPort: 8080
