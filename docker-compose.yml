@@ -7,6 +7,9 @@ services:
     restart: unless-stopped
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
     volumes:
       - mongo-data:/data/db
     networks:
@@ -21,7 +24,11 @@ services:
     depends_on:
       - mongo
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/gym_tracker
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=gym_tracker
+      - SPRING_DATA_MONGODB_USERNAME=root
+      - SPRING_DATA_MONGODB_PASSWORD=example
     networks:
       - gym-net
 
