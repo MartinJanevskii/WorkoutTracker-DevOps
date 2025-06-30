@@ -45,7 +45,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-frontend:latest
 
   deploy-to-aks:
-    name: CD: Deploy to AKS
+    name: Deploy to AKS
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
