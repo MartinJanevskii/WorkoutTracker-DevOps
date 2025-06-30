@@ -64,9 +64,9 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
 
-      - name: Ensure target namespace exists
-        run: |
-          kubectl get ns gym-tracker || kubectl create namespace gym-tracker
+      # - name: Ensure target namespace exists
+      #   run: |
+      #     kubectl get ns gym-tracker || kubectl create namespace gym-tracker
 
       - name: Deploy manifests
         run: |
