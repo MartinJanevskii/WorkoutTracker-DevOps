@@ -1,4 +1,4 @@
-name: Docker-build-and-push
+name: Docker-push-and-deploy
 
 on:
   push:
@@ -11,7 +11,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -27,6 +26,7 @@ jobs:
 
       - name: List backend folder files
         run: ls -la backend/
+
       - name: List folder files
         run: ls -la
 
@@ -44,3 +44,38 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/workout-tracker-frontend:latest
 
+  deploy-to-aks:
+    name: CD: Deploy to AKS
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Configure kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+
+      - name: Ensure target namespace exists
+        run: |
+          kubectl get ns gym-tracker || kubectl create namespace gym-tracker
+
+      - name: Deploy manifests
+        run: |
+          kubectl apply -n gym-tracker -f k8s/
+
+      - name: Verify rollout backend
+        run: |
+          kubectl rollout status deployment/gym-app -n gym-tracker --timeout=90s
+
+      - name: Verify rollout frontend
+        run: |
+          kubectl rollout status deployment/frontend -n gym-tracker --timeout=90s
