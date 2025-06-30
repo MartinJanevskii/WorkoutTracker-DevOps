@@ -72,6 +72,26 @@ jobs:
         run: |
           kubectl apply -n gym-tracker -f k8s/
 
+      - name: List pods in namespace
+        run: kubectl get pods -n gym-tracker -o wide
+
+      - name: Describe frontend deployment
+        run: kubectl describe deployment/frontend -n gym-tracker
+
+      - name: Describe pods for frontend
+        run: |
+          for pod in $(kubectl get pods -n gym-tracker -l app=frontend -o jsonpath="{.items[*].metadata.name}"); do
+            echo "Describing pod $pod"
+            kubectl describe pod $pod -n gym-tracker
+          done
+
+      - name: Show logs for frontend pods
+        run: |
+          for pod in $(kubectl get pods -n gym-tracker -l app=frontend -o jsonpath="{.items[*].metadata.name}"); do
+            echo "Logs for pod $pod"
+            kubectl logs $pod -n gym-tracker || true
+          done
+
       - name: Verify rollout
         run: |
           kubectl rollout status deployment/frontend -n gym-tracker --timeout=600s
