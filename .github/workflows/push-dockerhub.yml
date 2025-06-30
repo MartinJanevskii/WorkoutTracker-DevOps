@@ -66,13 +66,15 @@ jobs:
 
       - name: Ensure target namespace exists
         run: |
-          kubectl get ns nba-voting || kubectl create namespace nba-voting
+          kubectl get ns gym-tracker || kubectl create namespace gym-tracker
 
       - name: Deploy manifests
         run: |
-          kubectl apply -n nba-voting -f kubernetes/
+          kubectl apply -n gym-tracker -f k8s/
 
       - name: Verify rollout
         run: |
-          kubectl rollout status deployment/backend -n nba-voting --timeout=90s
-          kubectl rollout status deployment/frontend -n nba-voting --timeout=90s
+          kubectl rollout status deployment/gym-app -n gym-tracker --timeout=90s
+          kubectl rollout status deployment/frontend -n gym-tracker --timeout=90s
+      - name: Verify rollout mongo-db
+        run: kubectl rollout status statefulset/mongo-db -n gym-tracker --timeout=90
