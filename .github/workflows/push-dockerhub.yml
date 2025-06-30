@@ -49,7 +49,6 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -62,20 +61,18 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
+          mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
 
       - name: Ensure target namespace exists
         run: |
-          kubectl get ns gym-tracker || kubectl create namespace gym-tracker
+          kubectl get ns nba-voting || kubectl create namespace nba-voting
 
       - name: Deploy manifests
         run: |
-          kubectl apply -n gym-tracker -f k8s/
+          kubectl apply -n nba-voting -f kubernetes/
 
-      - name: Verify rollout backend
+      - name: Verify rollout
         run: |
-          kubectl rollout status deployment/gym-app -n gym-tracker --timeout=90s
-
-      - name: Verify rollout frontend
-        run: |
-          kubectl rollout status deployment/frontend -n gym-tracker --timeout=90s
+          kubectl rollout status deployment/backend -n nba-voting --timeout=90s
+          kubectl rollout status deployment/frontend -n nba-voting --timeout=90s
